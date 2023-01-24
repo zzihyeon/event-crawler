@@ -6,10 +6,12 @@ var iconv  = require('iconv-lite');
 
 async function main(maxPages = 50) {
     // initialized with the first webpage to visit
-    const paginationURLsToVisit = [
-        "http://www.playdb.co.kr/playdb/playdblist.asp?Page=1&sReqMainCategory=000001&sReqSubCategory=&sReqDistrict=&sReqTab=2&sPlayType=3&sStartYear=&sSelectType=1",
-        "http://www.playdb.co.kr/playdb/playdblist.asp?Page=2&sReqMainCategory=000001&sReqSubCategory=&sReqDistrict=&sReqTab=2&sPlayType=3&sStartYear=&sSelectType=1",
-        "http://www.playdb.co.kr/playdb/playdblist.asp?Page=3&sReqMainCategory=000001&sReqSubCategory=&sReqDistrict=&sReqTab=2&sPlayType=3&sStartYear=&sSelectType=1"];
+    const paginationURLsToVisit = [];
+    for (let i=1;i<10;i++) {
+        for (let j=1;j<3;j++) {
+            paginationURLsToVisit.push(`http://www.playdb.co.kr/playdb/playdblist.asp?Page=${j}&sReqMainCategory=00000${i}&sReqSubCategory=&sReqDistrict=&sReqTab=2&sPlayType=3&sStartYear=&sSelectType=1`)
+        }
+    }
     const visitedURLs = [];
     // iterating until the queue is empty
     // or the iteration limit is hit
@@ -26,7 +28,6 @@ async function main(maxPages = 50) {
             Headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'}
         });
         
-        fs.writeFileSync('zz.txt',pageHTML.data)
         // const strContents_prev = iconv.decode(pageHTML.data,'euckr')
         // const strContents = iconv.encode(strContents_prev,'utf8')
         // fs.writeFileSync('zz.txt',strContents)
@@ -55,8 +56,7 @@ async function main(maxPages = 50) {
         })
         urls.push(...newURLs)
     }
-    console.log(urls)
-    fs.writeFileSync('test.json',JSON.stringify(urls))
+    fs.writeFileSync('new.json',JSON.stringify(urls))
 }
 
 main()
